@@ -40,7 +40,7 @@ class pardotTracking extends PluginBase
       $piAId = $this->get('piAId', 'Survey', $surveyId);
       $piCId = $this->get('piCId', 'Survey', $surveyId);
 
-      if($pardot) {
+      if($pardot && strlen($piAId) && strlen($piCId)) {
         $pardot_track = "var piAId = '$piAId', piCId = '$piCId';
         (function() {
           function async_load(){
@@ -63,13 +63,11 @@ class pardotTracking extends PluginBase
             return json;
         }
         $(document).on('submit','#limesurvey',function(e) {
-                e.preventDefault();
                 var data = serializeObject($('#limesurvey').serializeArray());
                 if (typeof piTracker == 'function') { 
                     piTracker(window.location.origin + '/' + data['sid'] + '/' + data['thisstep']);
                     console.log(window.location.origin + '/' + data['sid'] + '/' + data['thisstep']);
                 }
-                this.submit();
         })";
 
         Yii::app()->clientScript->registerScript(false, $test, CClientScript::POS_END);
