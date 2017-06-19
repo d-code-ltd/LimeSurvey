@@ -320,12 +320,23 @@ abstract class Writer implements IWriter
                 $value = $response[$column];
                 if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type']!='answer_time' && $oSurvey->fieldMap[$column]['type']!='page_time' && $oSurvey->fieldMap[$column]['type']!='interview_time')
                 {
+                    // Insert '0' insted of '' for Multi matrix (:)
+                    if($oSurvey->fieldMap[$column]['type'] == ':' && $value == '' && !is_null($value)){
+                        $value = '0';
+                    }
                     switch ($oOptions->answerFormat) {
                         case 'long':
                             $elementArray[] = $this->getLongAnswer($oSurvey, $oOptions, $column,$value);
                             break;
                         default:
                         case 'short':
+                            // Insert the code instead of 1/0 for Multi enum (M) and Multi matrix (:)
+                            if($oSurvey->fieldMap[$column]['type'] == 'M' && $value == 'Y') {
+                                $value = $oSurvey->fieldMap[$column]['aid'];
+                            }
+                            if($oSurvey->fieldMap[$column]['type'] == ':' && $value == '1'){
+                                $value = end(explode('_', $oSurvey->fieldMap[$column]['aid']));
+                            }
                             $elementArray[] = $this->getShortAnswer($oSurvey, $oOptions, $column,$value);
                             break;
                     }

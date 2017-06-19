@@ -179,7 +179,7 @@ class export extends Survey_Common_Action {
             $selecthide = "";
             $selectshow = "";
             $selectinc = "";
-            if ( incompleteAnsFilterState() == "complete" )
+            if ( incompleteAnsFilterState() == "complete" || 1)
             {
                 $selecthide = "selected='selected'";
             }
@@ -193,11 +193,16 @@ class export extends Survey_Common_Action {
             }
 
             $aFields=array();
+
+            // ignore these file types so they don't appear in the column selector
+            $ignore_types = array('X', 'lastpage', 'startlanguage', 'page_time');
             foreach($aFieldMap as $sFieldName=>$fieldinfo)
             {
-                $sCode=viewHelper::getFieldCode($fieldinfo);
-                $aFields[$sFieldName]=$sCode.' - '.htmlspecialchars(ellipsize(html_entity_decode(viewHelper::getFieldText($fieldinfo)),40,.6,'...'));
-                $aFieldsOptions[$sFieldName]=array('title'=>viewHelper::getFieldText($fieldinfo),'data-fieldname'=>$fieldinfo['fieldname'],'data-emcode'=>viewHelper::getFieldCode($fieldinfo,array('LEMcompat'=>true))); // No need to filter title : Yii do it (remove all tag)
+                if(!in_array($fieldinfo['type'], $ignore_types)) {
+                    $sCode=viewHelper::getFieldCode($fieldinfo);
+                    $aFields[$sFieldName]=$sCode.' - '.htmlspecialchars(ellipsize(html_entity_decode(viewHelper::getFieldText($fieldinfo)),40,.6,'...'));
+                    $aFieldsOptions[$sFieldName]=array('title'=>viewHelper::getFieldText($fieldinfo),'data-fieldname'=>$fieldinfo['fieldname'],'data-emcode'=>viewHelper::getFieldCode($fieldinfo,array('LEMcompat'=>true))); // No need to filter title : Yii do it (remove all tag)
+                }
             }
 
             $data['SingleResponse']=(int)returnGlobal('id');
@@ -238,8 +243,8 @@ class export extends Survey_Common_Action {
             $data['headexports'] =array(
                 'code'=>array('label'=>gT("Question code"),'help'=>null,'checked'=>false),
                 'abbreviated'=>array('label'=>gT("Abbreviated question text"),'help'=>null,'checked'=>false),
-                'full'=>array('label'=>gT("Full question text"),'help'=>null,'checked'=>true),
-                'codetext'=>array('label'=>gT("Question code and question text"),'help'=>null,'checked'=>false),
+                'full'=>array('label'=>gT("Full question text"),'help'=>null,'checked'=>false),
+                'codetext'=>array('label'=>gT("Question code and question text"),'help'=>null,'checked'=>true),
             );
             // Add a plugin for adding headexports : a public function getRegistereddPlugins($event) can help here.
             $aLanguagesCode=Survey::model()->findByPk($iSurveyID)->getAllLanguages();

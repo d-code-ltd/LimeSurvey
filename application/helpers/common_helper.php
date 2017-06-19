@@ -2868,7 +2868,18 @@ function flattenText($sTextToFlatten, $bKeepSpan=false, $bDecodeHTMLEntities=fal
         $sNicetext = strip_tags($sNicetext,'<span><table><tr><td><th>');
     }
     else {
-        $sNicetext = strip_tags($sNicetext);
+        // Check if the given text has an <img> tag
+        if(preg_match('/<img[^>]+>/i',$sNicetext)){
+            // Get the alt text from the tag
+            preg_match_all('/alt=("[^"]*")/i',$sNicetext, $img);
+            if(!empty($img[1])){
+                $img[1] = reset($img[1]);
+                $img[1] = trim($img[1], '"\'');
+                $sNicetext = strip_tags($img[1]);
+            }
+        } else {
+            $sNicetext = strip_tags($sNicetext);
+        }
     }
     // ~\R~u : see "What \R matches" and "Newline sequences" in http://www.pcre.org/pcre.txt - only available since PCRE 7.0
     if ($bStripNewLines ){  // strip new lines
