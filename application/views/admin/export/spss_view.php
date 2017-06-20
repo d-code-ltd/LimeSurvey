@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for='spssver'  class='col-sm-2  form-control-label'><?php eT("Codeset:");?></label>
+        <label for='codeset'  class='col-sm-2  form-control-label'><?php eT("Codeset:");?></label>
         <div class="col-sm-10">
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'codeset',
