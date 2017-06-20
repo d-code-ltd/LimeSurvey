@@ -393,8 +393,10 @@ class export extends Survey_Common_Action {
 
         $headerComment = '*$Rev: 121017 $' . " $filterstate $spssver.\n";
 
+        $codeset = 'utf-8';
         if ( isset($_POST['dldata']) ) $subaction = "dldata";
         if ( isset($_POST['dlstructure']) ) $subaction = "dlstructure";
+        if ( isset($_POST['codeset']) ) $codeset = $_POST['codeset'];
 
         if  ( ! isset($subaction) )
         {
@@ -459,13 +461,13 @@ class export extends Survey_Common_Action {
         if ( $subaction == 'dldata' )
         {
             header("Content-Disposition: attachment; filename=survey_" . $iSurveyID . "_SPSS_data_file.dat");
-            header("Content-type: text/comma-separated-values; charset=UTF-8");
+            header("Content-type: text/comma-separated-values; charset=".$codeset);
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("Pragma: public");
 
             if ( $spssver == 2 )
             {
-                echo "\xEF\xBB\xBF";
+                printRow("\xEF\xBB\xBF", $codeset);
             }
 
             $sNoAnswerValue = (isset($_POST['noanswervalue']) && $_POST['noanswervalue'] != '' )?'\''.$_POST['noanswervalue'].'\'':'';
@@ -477,7 +479,7 @@ class export extends Survey_Common_Action {
         if ( $subaction == 'dlstructure' )
         {
             header("Content-Disposition: attachment; filename=survey_" . $iSurveyID . "_SPSS_syntax_file.sps");
-            header("Content-type: application/download; charset=UTF-8");
+            header("Content-type: application/download; charset=".$codeset);
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("Pragma: public");
 
@@ -522,21 +524,21 @@ class export extends Survey_Common_Action {
             */
             if ( $spssver == 2 )
             {
-                echo "\xEF\xBB\xBF";
+                printRow("\xEF\xBB\xBF", $codeset);
             }
 
-            echo $headerComment;
+            printRow($headerComment, $codeset);
 
             if  ($spssver == 2 )
             {
-                echo "SET UNICODE=ON.\n";
+                printRow("SET UNICODE=ON.\n", $codeset);
             }
 
-            echo "SHOW LOCALE.\n";
-            echo "PRESERVE LOCALE.\n";
-            echo "SET LOCALE='en_UK'.\n";
+            printRow("SHOW LOCALE.\n", $codeset);
+            printRow("PRESERVE LOCALE.\n", $codeset);
+            printRow("SET LOCALE='en_UK'.\n", $codeset);
 
-            echo "GET DATA\n"
+            printRow("GET DATA\n"
             ." /TYPE=TXT\n"
             ." /FILE='survey_" . $iSurveyID . "_SPSS_data_file.dat'\n"
             ." /DELCASE=LINE\n"
@@ -545,7 +547,7 @@ class export extends Survey_Common_Action {
             ." /ARRANGEMENT=DELIMITED\n"
             ." /FIRSTCASE=1\n"
             ." /IMPORTCASE=ALL\n"
-            ." /VARIABLES=";
+            ." /VARIABLES=", $codeset);
 
             foreach ( $fields as $field )
             {
@@ -556,14 +558,14 @@ class export extends Survey_Common_Action {
                     $field['size'] .= '.' . ($field['size']-1);
                 }
 
-                if ( !$field['hide'] ) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
+                if ( !$field['hide'] ) printRow("\n {$field['id']} {$field['SPSStype']}{$field['size']}", $codeset);
             }
 
-            echo ".\nCACHE.\n"
-            ."EXECUTE.\n";
+            printRow(".\nCACHE.\n"
+            ."EXECUTE.\n", $codeset);
 
             //Create the variable labels:
-            echo "*Define Variable Properties.\n";
+            printRow("*Define Variable Properties.\n", $codeset);
             foreach ( $fields as $field )
             {
                 if ( ! $field['hide'] )
@@ -578,12 +580,12 @@ class export extends Survey_Common_Action {
                             $label_parts[$idx + 1] = '"' . $label_parts[$idx + 1];
                         }
                     }
-                    echo "VARIABLE LABELS " . $field['id'] . " \"" . implode("\"+\n\"", $label_parts) . "\".\n";
+                    printRow("VARIABLE LABELS " . $field['id'] . " \"" . implode("\"+\n\"", $label_parts) . "\".\n", $codeset);
                 }
             }
 
             // Create our Value Labels!
-            echo "*Define Value labels.\n";
+            printRow("*Define Value labels.\n", $codeset);
             foreach ( $fields as $field )
             {
                 if ( isset($field['answers']) )
@@ -591,7 +593,7 @@ class export extends Survey_Common_Action {
                     $answers = $field['answers'];
 
                     //print out the value labels!
-                    echo "VALUE LABELS  {$field['id']}\n";
+                    printRow("VALUE LABELS  {$field['id']}\n", $codeset);
 
                     $i=0;
                     foreach ( $answers as $answer )
@@ -609,11 +611,11 @@ class export extends Survey_Common_Action {
 
                         if ( $i < count($answers) )
                         {
-                            echo " $str \"{$answer['value']}\"\n";
+                            printRow(" $str \"{$answer['value']}\"\n", $codeset);
                         }
                         else
                         {
-                            echo " $str \"{$answer['value']}\".\n";
+                            printRow(" $str \"{$answer['value']}\".\n", $codeset);
                         }
                     }
                 }
@@ -626,10 +628,10 @@ class export extends Survey_Common_Action {
                     switch ( $field['scale'] )
                     {
                         case 2:
-                            echo "VARIABLE LEVEL {$field['id']}(ORDINAL).\n";
+                            printRow("VARIABLE LEVEL {$field['id']}(ORDINAL).\n", $codeset);
                             break;
                         case 3:
-                            echo "VARIABLE LEVEL {$field['id']}(SCALE).\n";
+                            printRow("VARIABLE LEVEL {$field['id']}(SCALE).\n", $codeset);
                     }
                 }
             }
@@ -650,13 +652,13 @@ class export extends Survey_Common_Action {
 
                     if ( $ftitle != $field['title'] )
                     {
-                        echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
+                        printRow("* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n", $codeset);
                     }
 
-                    echo "RENAME VARIABLE ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
+                    printRow("RENAME VARIABLE ( " . $field['id'] . ' = ' . $ftitle . " ).\n", $codeset);
                 }
             }
-            echo "RESTORE LOCALE.\n";
+            printRow("RESTORE LOCALE.\n", $codeset);
             exit;
         }
     }

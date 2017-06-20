@@ -28,6 +28,19 @@
             ));?>
         </div>
     </div>
+    <div class="form-group row">
+        <label for='spssver'  class='col-sm-2  form-control-label'><?php eT("Codeset:");?></label>
+        <div class="col-sm-10">
+            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'codeset',
+                'value'=> 'windows-1250' ,
+                'selectOptions'=>array(
+                    "utf-8"=>gT("UTF-8"),
+                    "windows-1250"=>gT("Windows 1250 (CE)")
+                )
+            ));?>
+        </div>
+    </div>
     <?php
     if (count($aLanguages)>1)
     { ?>

@@ -76,7 +76,7 @@ function strSplitUnicode($str, $l = 0) {
 * @param sep Quote separator. Use '\'' for SPSS, '"' for R
 * @param logical $header If TRUE, adds SQGA code as column headings (used by export to R)
 */
-function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE, $sLanguage='') {
+function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE, $sLanguage='', $codeset = 'utf-8') {
 
     // Build array that has to be returned
     $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
@@ -101,11 +101,11 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
             {
                 $i = 1;
                 foreach ($fields as $field) {
-                    if (!$field['hide'] ) echo $q.strtoupper($field['sql_name']).$q;
-                    if ($i<$num_fields && !$field['hide']) echo ',';
+                    if (!$field['hide'] ) printRow($q.strtoupper($field['sql_name']).$q, $codeset);
+                    if ($i<$num_fields && !$field['hide']) printRow(',', $codeset);
                     $i++;
                 }
-                echo("\n");
+                printRow("\n", $codeset);
             }
         }
         $row = array_change_key_case($row,CASE_UPPER);
@@ -122,69 +122,69 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
                     list( $year, $month, $day, $hour, $minute, $second ) = preg_split( '([^0-9])', $row[$fieldno] );
                     if ($year != '' && (int)$year >= 1900)
                     {
-                        echo $q.date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) ).$q;
+                        printRow($q.date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) ).$q, $codeset);
                     } else
                     {
-                        echo ($na);
+                        printRow($na, $codeset);
                     }
                 }  else
                 {
-                    echo ($na);
+                    printRow($na, $codeset);
                 }
             } else if ($field['LStype'] == 'Y')
                 {
                     if ($row[$fieldno] == 'Y')    // Yes/No Question Type
                     {
-                        echo( $q. 1 .$q);
+                        printRow($q. 1 .$q, $codeset);
                     } else if ($row[$fieldno] == 'N'){
-                            echo( $q. 2 .$q);
+                            printRow($q. 2 .$q, $codeset);
                         } else {
-                            echo($na);
+                            printRow($na, $codeset);
                     }
                 } else if ($field['LStype'] == 'G')    //Gender
                     {
                         if ($row[$fieldno] == 'F')
                         {
-                            echo( $q. 1 .$q);
+                            printRow($q. 1 .$q, $codeset);
                         } else if ($row[$fieldno] == 'M'){
-                                echo( $q. 2 .$q);
+                                printRow($q. 2 .$q, $codeset);
                             } else {
-                                echo($na);
+                                printRow($na, $codeset);
                         }
                     } else if ($field['LStype'] == 'C')    //Yes/No/Uncertain
                         {
                             if ($row[$fieldno] == 'Y')
                             {
-                                echo( $q. 1 .$q);
+                                printRow($q. 1 .$q, $codeset);
                             } else if ($row[$fieldno] == 'N'){
-                                    echo( $q. 2 .$q);
+                                    printRow($q. 2 .$q, $codeset);
                                 } else if ($row[$fieldno] == 'U'){
-                                        echo( $q. 3 .$q);
+                                        printRow($q. 3 .$q, $codeset);
                                     } else {
-                                        echo($na);
+                                        printRow($na, $codeset);
                             }
                         } else if ($field['LStype'] == 'E')     //Increase / Same / Decrease
                             {
                                 if ($row[$fieldno] == 'I')
                                 {
-                                    echo( $q. 1 .$q);
+                                    printRow($q. 1 .$q, $codeset);
                                 } else if ($row[$fieldno] == 'S'){
-                                        echo( $q. 2 .$q);
+                                        printRow($q. 2 .$q, $codeset);
                                     } else if ($row[$fieldno] == 'D'){
-                                            echo( $q. 3 .$q);
+                                            printRow($q. 3 .$q, $codeset);
                                         } else {
-                                            echo($na);
+                                            printRow($na, $codeset);
                                 }
                             } elseif (($field['LStype'] == 'P' || $field['LStype'] == 'M') && (substr($field['code'],-7) != 'comment' && substr($field['code'],-5) != 'other'))
                             {
                                 if ($row[$fieldno] == 'Y')
                                 {
-                                    echo($q. 1 .$q);
+                                    printRow($q. 1 .$q, $codeset);
                                 } elseif(isset($row[$fieldno]))
                                 {
-                                    echo($q. 0 .$q);
+                                    printRow($q. 0 .$q, $codeset);
                                 } else {
-                                    echo($na);
+                                    printRow($na, $codeset);
                                 }
                             } elseif (!$field['hide']) {
                                 $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
@@ -197,18 +197,32 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
                                     $strTemp = str_replace('.',',',$strTemp);
                                     }
                                     */
-                                    echo $q. $strTemp .$q ;
+                                    printRow($q. $strTemp .$q, $codeset);
                                 }
                                 else
                                 {
-                                    echo $na;
+                                    printRow($na, $codeset);
                                 }
                             }
-                            if ($i<$num_fields && !$field['hide']) echo ',';
+                            if ($i<$num_fields && !$field['hide']) printRow(',', $codeset);
             $i++;
         }
-        echo "\n";
+        printRow("\n", $codeset);
     }
+}
+
+/**
+* Encode and print the given string.
+*
+* @param string text to be encoded
+* @param string utf-8 or windows-1250 for now
+* @return string encoded text
+*/
+function printRow($string, $codeset = 'utf-8'){
+    if($codeset != 'utf-8'){
+        $string = iconv( mb_detect_encoding( $string ), 'Windows-1250//TRANSLIT', $string);
+    }
+    echo $string;
 }
 
 /**
