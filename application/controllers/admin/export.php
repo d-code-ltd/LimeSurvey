@@ -536,7 +536,9 @@ class export extends Survey_Common_Action {
 
             printRow("SHOW LOCALE.\n", $codeset);
             printRow("PRESERVE LOCALE.\n", $codeset);
-            printRow("SET LOCALE='en_UK'.\n", $codeset);
+            
+            // Reported to be causing problems.
+            // printRow("SET LOCALE='en_UK'.\n", $codeset);
 
             printRow("GET DATA\n"
             ." /TYPE=TXT\n"
