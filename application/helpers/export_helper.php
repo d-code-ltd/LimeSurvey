@@ -1756,6 +1756,10 @@ function tokensExport($iSurveyID)
     {
         $oRecordSet->andWhere("completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)");
     }
+    if ($iTokenStatus==5)
+    {
+        $oRecordSet->andWhere("completed='Q'");
+    }
 
     if ($iInvitationStatus==1)
     {
