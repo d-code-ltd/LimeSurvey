@@ -320,8 +320,8 @@ abstract class Writer implements IWriter
                 $value = $response[$column];
                 if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type']!='answer_time' && $oSurvey->fieldMap[$column]['type']!='page_time' && $oSurvey->fieldMap[$column]['type']!='interview_time')
                 {
-                    // Insert '0' insted of '' for Multi matrix (:)
-                    if($oSurvey->fieldMap[$column]['type'] == ':' && $value == '' && !is_null($value)){
+                    // Insert '0' insted of '' for Multi matrix (:) and Multi enum (M)
+                    if(in_array($oSurvey->fieldMap[$column]['type'], array(':','M'))  && $value == '' && !is_null($value)){
                         $value = '0';
                     }
                     switch ($oOptions->answerFormat) {
