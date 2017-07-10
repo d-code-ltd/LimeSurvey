@@ -36,7 +36,7 @@ function getSurveyDefaultSettings()
     'htmlemail'                => 'Y',
     'emailnotificationto'      => '',
     'anonymized'               => 'N',
-    'datestamp'                => 'N',
+    'datestamp'                => 'Y',
     'ipaddr'                   => 'N',
     'refurl'                   => 'N',
     'tokenanswerspersistence'  => 'N',

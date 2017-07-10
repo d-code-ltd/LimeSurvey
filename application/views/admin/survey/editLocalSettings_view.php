@@ -17,6 +17,16 @@
         </div>
     </div>
 
+        <!-- Survey name -->
+    <div class="form-group">
+        <label class="col-sm-2 question-group-name control-label" for="short_name_<?php echo $esrow['surveyls_language']; ?>">
+            <?php echo eT("Survey title").' (admin):'; ?>
+        </label>
+        <div class="col-sm-9">
+            <?php echo CHtml::textField("short_name_{$esrow['surveyls_language']}",$esrow['surveyls_name'],array('class'=>'form-control','size'=>"80",'id'=>"short_name_{$esrow['surveyls_language']}")); ?>
+        </div>
+    </div>
+
     <!-- Description -->
     <div class="form-group">
         <label class="col-sm-2 control-label"  for="description_<?php echo $esrow['surveyls_language']; ?>"><?php eT("Description:"); ?></label>

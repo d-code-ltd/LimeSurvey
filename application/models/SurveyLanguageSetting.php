@@ -98,6 +98,7 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('email_admin_responses','LSYii_Validators'),
 
             array('surveyls_title','LSYii_Validators'),
+            array('surveyls_name','LSYii_Validators'),
             array('surveyls_description','LSYii_Validators'),
             array('surveyls_welcometext','LSYii_Validators'),
             array('surveyls_endtext','LSYii_Validators'),
@@ -177,7 +178,7 @@ class SurveyLanguageSetting extends LSActiveRecord
 
     function getAllSurveys($hasPermission = FALSE)
     {
-        $this->db->select('a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url');
+        $this->db->select('a.*, surveyls_title, surveyls_name, surveyls_description, surveyls_welcometext, surveyls_url');
         $this->db->from('surveys AS a');
         $this->db->join('surveys_languagesettings','surveyls_survey_id=a.sid AND surveyls_language=a.language');
 

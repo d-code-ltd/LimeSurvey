@@ -1145,6 +1145,8 @@ function getSurveyInfo($surveyid, $languagecode='')
         {
             $thissurvey=array_merge($result->survey->attributes,$result->attributes);
             $thissurvey['name']=$thissurvey['surveyls_title'];
+            $thissurvey['title']=$thissurvey['surveyls_name'];
+            // Name is title and title is name, because the limesurvey team likes this logic.
             $thissurvey['description']=$thissurvey['surveyls_description'];
             $thissurvey['welcome']=$thissurvey['surveyls_welcometext'];
             $thissurvey['templatedir']=$thissurvey['template'];
