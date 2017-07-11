@@ -185,6 +185,8 @@ class Survey extends LSActiveRecord
             array('startdate', 'default','value'=>NULL),
             array('expires', 'default','value'=>NULL),
             array('admin,faxto','LSYii_Validators'),
+            array('partner_token_length', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'99', 'allowEmpty'=>true),
+            array('partner_url','LSYii_Validators'),
             array('adminemail','filter', 'filter'=>'trim'),
             array('bounce_email','filter', 'filter'=>'trim'),
             array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),

@@ -52,6 +52,18 @@
                         ?>
                     </div>
                 </div>
+                <div class='form-group'>
+                    <label class='control-label col-sm-3' for='partner-token-length'><?php eT("Partner token minumum length:");?></label>
+                    <div class='col-sm-9'>
+                        <input class='form-control' id="partner-token-length" name="partner_token_length" type="number" size="2" maxlength="2" value="<?php echo $quotainfo['partner_token_length'];?>" />
+                    </div>
+                </div>
+                <div class='form-group'>
+                    <label class='control-label col-sm-3' for='partner-url'><?php eT("Partner URL:");?></label>
+                    <div class='col-sm-9'>
+                        <input class='form-control' id="partner-url" name="partner_url" type="text" size="30" maxlength="255" value="<?php echo $quotainfo['partner_url'];?>" />
+                    </div>
+                </div>
                 <!-- Language tabs -->
                 <ul class="nav nav-tabs">
                     <?php foreach ($langs as $lang): ?>
