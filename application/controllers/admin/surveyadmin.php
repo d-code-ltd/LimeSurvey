@@ -1635,17 +1635,20 @@ class SurveyAdmin extends Survey_Common_Action
 
             // Prepare locale data for surveys_language_settings table
             $sTitle          = Yii::app()->request->getPost('surveyls_title');
+            $sName           = Yii::app()->request->getPost('surveyls_name');
             $sDescription    = Yii::app()->request->getPost('description');
             $sWelcome        = Yii::app()->request->getPost('welcome');
             $sURLDescription = Yii::app()->request->getPost('urldescrip');
 
             $sTitle          = html_entity_decode($sTitle, ENT_QUOTES, "UTF-8");
+            $sName          = html_entity_decode($sName, ENT_QUOTES, "UTF-8");
             $sDescription    = html_entity_decode($sDescription, ENT_QUOTES, "UTF-8");
             $sWelcome        = html_entity_decode($sWelcome, ENT_QUOTES, "UTF-8");
             $sURLDescription = html_entity_decode($sURLDescription, ENT_QUOTES, "UTF-8");
 
             // Fix bug with FCKEditor saving strange BR types
             $sTitle       = fixCKeditorText($sTitle);
+            $sName       = fixCKeditorText($sName);
             $sDescription = fixCKeditorText($sDescription);
             $sWelcome     = fixCKeditorText($sWelcome);
 
@@ -1654,6 +1657,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aInsertData = array(
                 'surveyls_survey_id'      => $iNewSurveyid,
                 'surveyls_title'          => $sTitle,
+                'surveyls_name'          => $sName,
                 'surveyls_description'    => $sDescription,
                 'surveyls_welcometext'    => $sWelcome,
                 'surveyls_language'       => Yii::app()->request->getPost('language'),

@@ -42,6 +42,15 @@ PrepareEditorScript(false, $this);
             <span class='text-warning'><?php  eT("Required"); ?> </span>
         </div>
 
+        <!-- Name -->
+        <div class="form-group">
+            <label class="col-sm-2 control-label"  for='surveyls_name'><?php echo eT("Survey title").' (admin):'; ?></label>
+            <div class="col-sm-6">
+                <?php echo CHtml::textField("surveyls_name","",array('class'=>'form-control','maxlength'=>"200",'required'=>'required','autofocus'=>'autofocus','id'=>"surveyls_name")); ?>
+            </div>
+            <span class='text-warning'><?php  eT("Required"); ?> </span>
+        </div>
+
         <!-- Create sample group/question checkbox -->
         <div class="form-group">
             <label class="col-sm-2 control-label" for='createsample'><?php  eT("Sample question:"); ?></label>

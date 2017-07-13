@@ -17,7 +17,7 @@
         </div>
     </div>
 
-        <!-- Survey name -->
+    <!-- Survey name -->
     <div class="form-group">
         <label class="col-sm-2 question-group-name control-label" for="short_name_<?php echo $esrow['surveyls_language']; ?>">
             <?php echo eT("Survey title").' (admin):'; ?>
