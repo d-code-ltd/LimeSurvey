@@ -9,19 +9,19 @@
             <?php echo CHtml::form(array("admin/quotas/sa/modifyquota/surveyid/{$iSurveyId}"), 'post', array('id'=>'editquota','class'=>'form-horizontal')); ?>
                 <div class='form-group'>
                     <label class='control-label col-sm-3' for='quota_name'><?php eT("Quota name:");?></label>
-                    <div class='col-sm-9'>
+                    <div class='col-sm-5'>
                         <input class='form-control' id="quota_name" name="quota_name" type="text" size="30" maxlength="255" value="<?php echo $quotainfo['name'];?>" />
                     </div>
                 </div>
                 <div class='form-group'>
                     <label class='control-label col-sm-3' for='quota_limit'><?php eT("Quota limit:");?></label>
-                    <div class='col-sm-9'>
+                    <div class='col-sm-2'>
                         <input class='form-control' id="quota_limit" name="quota_limit" type="number" size="12" maxlength="8" value="<?php echo $quotainfo['qlimit'];?>" />
                     </div>
                 </div>
                 <div class='form-group'>
                     <label class='control-label col-sm-3' for='quota_action'><?php eT("Quota action:");?></label>
-                    <div class='col-sm-9'>
+                    <div class='col-sm-5'>
                         <select name="quota_action" id="quota_action" class="form-control">
                             <option value ="1" <?php if($quotainfo['action'] == 1) echo "selected='selected'"; ?>><?php eT("Terminate survey");?></option>
                             <option value ="2" <?php if($quotainfo['action'] == 2) echo "selected='selected'"; ?>><?php eT("Terminate survey with warning");?></option>
@@ -30,7 +30,7 @@
                 </div>
                 <div class='form-group'>
                     <label class='control-label col-sm-3' for='autoload_url'><?php eT("Autoload URL:");?></label>
-                    <div class='col-sm-9'>
+                    <div class='col-sm-5'>
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'autoload_url',
                             'id'=>'autoload_url',
@@ -42,7 +42,7 @@
                 </div>
                 <div class='form-group'>
                     <label class='control-label col-sm-3' for='active'><?php eT("Active:");?></label>
-                    <div class='col-sm-9'>
+                    <div class='col-sm-5'>
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'active',
                             'id'=>'active',
@@ -54,13 +54,13 @@
                 </div>
                 <div class='form-group'>
                     <label class='control-label col-sm-3' for='partner-token-length'><?php eT("Partner token minumum length:");?></label>
-                    <div class='col-sm-9'>
+                    <div class='col-sm-2'>
                         <input class='form-control' id="partner-token-length" name="partner_token_length" type="number" size="2" maxlength="2" value="<?php echo $quotainfo['partner_token_length'];?>" />
                     </div>
                 </div>
                 <div class='form-group'>
                     <label class='control-label col-sm-3' for='partner-url'><?php eT("Partner URL:");?></label>
-                    <div class='col-sm-9'>
+                    <div class='col-sm-5'>
                         <input class='form-control' id="partner-url" name="partner_url" type="text" size="30" maxlength="255" value="<?php echo $quotainfo['partner_url'];?>" />
                     </div>
                 </div>

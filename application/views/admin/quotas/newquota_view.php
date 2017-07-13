@@ -1,5 +1,4 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class='col-lg-8'>
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=> gT("New quota"))); ?>
@@ -59,6 +58,20 @@
                         ?>
                     </div>
                 </div>
+                <!-- Partner token minumum length -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="partner-token-length"><?php eT("Partner token minumum length:");?></label>
+                    <div class="col-sm-2">
+                        <input class="form-control" id="partner-token-length" name="partner_token_length" type="number" size="12" maxlength="8" size="2" maxlength="2" />
+                    </div>
+                </div>
+                <!-- Partner URL -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="partner-url"><?php eT("Partner URL:");?></label>
+                    <div class="col-sm-5">
+                        <input class="form-control" id="partner-url" name="partner_url" type="text" size="30" maxlength="255" />
+                    </div>
+                </div>
                 <!--
                 <div class="form-group">
                     <div class="col-sm-10">
@@ -114,4 +127,4 @@
             </form>
         </div>
     </div>
-</div></div></div>
+</div></div>
