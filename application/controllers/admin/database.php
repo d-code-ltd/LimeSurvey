@@ -1187,6 +1187,8 @@ class database extends Survey_Common_Action
                 $oSurvey->expires =  $expires;
                 $oSurvey->startdate =  $startdate;
                 $oSurvey->faxto = App()->request->getPost('faxto');
+                $oSurvey->partner_token_length = App()->request->getPost('partner_token_length');
+                $oSurvey->partner_url = App()->request->getPost('partner_url');
                 $oSurvey->format = App()->request->getPost('format');
                 $oSurvey->template = Yii::app()->request->getPost('template');
                 $oSurvey->assessments = App()->request->getPost('assessments')=='1'?'Y':'N';

@@ -90,7 +90,7 @@
                     )); */ ?>
 
                     <div class='col-sm-5'>
-                        <select id='anonymized' class='form-control' name='anonymized' onchange='alertPrivacy();' disabled>
+                        <select id='anonymized' class='form-control' name='anonymized' onchange='alertPrivacy();'>
                             <option value='Y'
                             <?php if ($aSurveysettings['anonymized'] == "Y") { ?>
                                 selected='selected'
@@ -112,7 +112,7 @@
                         <?php eT("Date stamp?"); ?>
                     </label>
                     <div class='col-sm-5'>
-                        <select id='datestamp' class='form-control' name='datestamp' onchange='alertDateStampAnonymization();' disabled>
+                        <select id='datestamp' class='form-control' name='datestamp' onchange='alertDateStampAnonymization();'>
                             <option value='Y' <?php if ($aSurveysettings['datestamp'] == "Y"){echo 'selected="selected"';}?>>
                                 <?php eT("Yes"); ?>
                             </option>
@@ -167,7 +167,7 @@
             <div class='form-group'>
                 <label class='control-label col-sm-7' for='savetimings'><?php eT("Save timings?"); ?></label>
                 <div class='col-sm-5'>
-                    <select class='form-control' id='savetimings' name='savetimings' disabled>
+                    <select class='form-control' id='savetimings' name='savetimings'>
                         <option value='Y' <?php if (!isset($aSurveysettings['savetimings']) || !$aSurveysettings['savetimings'] || $aSurveysettings['savetimings'] == "Y") { ?> selected='selected' <?php } ?>>
                             <?php eT("Yes"); ?>
                         </option>
