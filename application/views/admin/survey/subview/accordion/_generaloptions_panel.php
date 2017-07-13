@@ -216,6 +216,22 @@
         </div>
     </div>
 
+    <!-- Partner token length -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='partner-token-length'><?php  eT("Partner token minumum length:") ; ?></label>
+        <div class="col-sm-9">
+            <input id='partner-token-length' name='partner_token_length' class="form-control" type="number" min="0" size="2" maxlength="2"/>
+        </div>
+    </div>
+
+    <!-- Partner url -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='partner-url'><?php  eT("Partner URL:") ; ?></label>
+        <div class="col-sm-9">
+            <input id='partner-url' name='partner_url' class="form-control" type="text" size="30" maxlength="255" />
+        </div>
+    </div>
+
     <?php endif;?>
 
 <!-- Format -->

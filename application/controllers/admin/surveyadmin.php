@@ -1572,6 +1572,8 @@ class SurveyAdmin extends Survey_Common_Action
             'active' => 'N',
             'anonymized' => App()->request->getPost('anonymized')=='1'?'Y':'N',
             'faxto' => App()->request->getPost('faxto'),
+            'partner_token_length' => App()->request->getPost('partner_token_length'),
+            'partner_url' => App()->request->getPost('partner_url'),
             'format' => App()->request->getPost('format'),
             'savetimings' => App()->request->getPost('savetimings')=='1'?'Y':'N',
             'language' => App()->request->getPost('language'),
