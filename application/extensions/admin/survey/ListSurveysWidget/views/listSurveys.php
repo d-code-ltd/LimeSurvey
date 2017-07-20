@@ -17,8 +17,6 @@
 <div class="row">
     <div class="col-sm-12 content-right">
         <?php
-            var_dump(time());
-            var_dump(date('Y-m-d H:i:s'));
             $surveyGrid = $this->widget('bootstrap.widgets.TbGridView', array(
             'dataProvider' => $this->model->search(),
 
