@@ -12,6 +12,7 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
 
+var_dump(@date_default_timezone_get());
 if (! date_default_timezone_set(@date_default_timezone_get()))
 {
 
