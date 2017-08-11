@@ -19,9 +19,6 @@ if (! date_default_timezone_set(@date_default_timezone_get()))
 }
 
 
-var_dump(@date_default_timezone_get());
-
-
 if (function_exists('mb_internal_encoding')) {
     // Needed to substring arabic etc
     mb_internal_encoding('UTF-8');
