@@ -878,7 +878,7 @@ class SurveyRuntimeHelper {
 
                     sendCacheHeaders();
                     // Partner endpage
-                    if(isset($clienttoken) && strlen($clienttoken) >= intval($thissurvey['partner_token_length'])){
+                    if(isset($clienttoken) && strlen($thissurvey['partner_url']) && strlen($clienttoken) && strlen($clienttoken) >= intval($thissurvey['partner_token_length'])){
                         $thissurvey['partner_url'] = str_replace("{token}", $clienttoken, $thissurvey['partner_url']);
                         header("Location: {$thissurvey['partner_url']}");
                     }

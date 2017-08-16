@@ -2200,7 +2200,7 @@ function checkCompletedQuota($surveyid,$return=false)
     sendCacheHeaders();
 
     // Partner endlink
-    if(strlen($sClientToken) >= intval($sPartnerTokenLength))
+    if(isset($sClientToken) && strlen($sPartnerUrl) && strlen($sClientToken) && strlen($sClientToken) >= intval($sPartnerTokenLength))
     {
         killSurveySession($surveyid);
         $sPartnerUrl = str_replace("{token}", $sClientToken, $sPartnerUrl);
