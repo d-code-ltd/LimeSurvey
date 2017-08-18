@@ -601,6 +601,22 @@ class export extends Survey_Common_Action {
                     foreach ( $answers as $answer )
                     {
                         $i++;
+                        if ( $field['LStype'] == ':' && $answer['code'] == 1){
+                            $code = explode('_', $field['code']);
+                            $answer['code'] = end($code);
+                            $answer['value'] = 'test';
+                            preg_match_all("/\[(.*?)\]/", $field['VariableLabel'], $matches);
+                            if(isset($matches[1][1])){
+                                $answer['value'] = $matches[1][1];
+                            }
+                        }
+                        if ( $field['LStype'] == 'M' && $answer['code'] == 1){
+                            $answer['code'] = $field['code'];
+                            preg_match("/\[(.*?)\]/", $field['VariableLabel'], $matches);
+                            if(isset($matches[1])){
+                                $answer['value'] = $matches[1];
+                            }
+                        }
 
                         if ( $field['SPSStype'] == "F" && isNumericExtended($answer['code']) )
                         {
