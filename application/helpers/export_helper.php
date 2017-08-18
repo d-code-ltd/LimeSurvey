@@ -113,7 +113,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
         reset($fields);    //Jump to the first element in the field array
         $i = 1;
         foreach ($fields as $field)
-        {
+        {  
             $fieldno = strtoupper($field['sql_name']);
             if ($field['SPSStype']=='DATETIME23.2'){
                 #convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
@@ -175,36 +175,47 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
                                         } else {
                                             printRow($na, $codeset);
                                 }
-                            } elseif (($field['LStype'] == 'P' || $field['LStype'] == 'M') && (substr($field['code'],-7) != 'comment' && substr($field['code'],-5) != 'other'))
-                            {
-                                if ($row[$fieldno] == 'Y')
+                            } else if ($field['LStype'] == ':')     //Increase / Same / Decrease
                                 {
-                                    printRow($q. 1 .$q, $codeset);
-                                } elseif(isset($row[$fieldno]))
-                                {
-                                    printRow($q. 0 .$q, $codeset);
-                                } else {
-                                    printRow($na, $codeset);
-                                }
-                            } elseif (!$field['hide']) {
-                                $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
-                                if (trim($strTmp) != ''){
-                                    if($q=='\'') $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
-                                    if($q=='"') $strTemp=str_replace(array('"',"\n","\r"),array('""',' ',' '),trim($strTmp));
-                                    /*
-                                    * Temp quick fix for replacing decimal dots with comma's
-                                    if (isNumericExtended($strTemp)) {
-                                    $strTemp = str_replace('.',',',$strTemp);
+                                    if ($row[$fieldno] == '1')
+                                    {
+                                        $code = explode('_', $field['code']);
+                                        printRow($q. end($code) .$q, $codeset);
+                                    } else if ($row[$fieldno] == '' && !is_null($row[$fieldno])){
+                                                printRow($q. 0 .$q, $codeset);
+                                            } else {
+                                                printRow($na, $codeset);
                                     }
-                                    */
-                                    printRow($q. $strTemp .$q, $codeset);
-                                }
-                                else
+                                } elseif (($field['LStype'] == 'P' || $field['LStype'] == 'M') && (substr($field['code'],-7) != 'comment' && substr($field['code'],-5) != 'other'))
                                 {
-                                    printRow($na, $codeset);
+                                    if ($row[$fieldno] == 'Y')
+                                    {
+                                        printRow($q. $field['code'] .$q, $codeset);
+                                    } elseif(isset($row[$fieldno]))
+                                    {
+                                        printRow($q. 0 .$q, $codeset);
+                                    } else {
+                                        printRow($na, $codeset);
+                                    }
+                                } elseif (!$field['hide']) {
+                                    $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
+                                    if (trim($strTmp) != ''){
+                                        if($q=='\'') $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
+                                        if($q=='"') $strTemp=str_replace(array('"',"\n","\r"),array('""',' ',' '),trim($strTmp));
+                                        /*
+                                        * Temp quick fix for replacing decimal dots with comma's
+                                        if (isNumericExtended($strTemp)) {
+                                        $strTemp = str_replace('.',',',$strTemp);
+                                        }
+                                        */
+                                        printRow($q. $strTemp .$q, $codeset);
+                                    }
+                                    else
+                                    {
+                                        printRow($na, $codeset);
+                                    }
                                 }
-                            }
-                            if ($i<$num_fields && !$field['hide']) printRow(',', $codeset);
+                                if ($i<$num_fields && !$field['hide']) printRow(',', $codeset);
             $i++;
         }
         printRow("\n", $codeset);
@@ -336,6 +347,23 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 }
 
 /**
+* Removes the fields that are not needed in SPSS
+*
+* @param $array array of elements that has to be cleared up
+* @return array
+*/
+function removeFields($array){
+    foreach ($array as $key => $value) {
+        if(in_array($key, array('firstname','lastname','email','emailstatus','language','sent','remindersent','remindercount','usesleft','lastpage','startlanguage','startdate','datestamp', 'datestamp', 'startlanguage', 'remindercount'))) {
+            // array_splice($array, $key, 1);
+            unset($array[$key]);
+        }
+    }
+
+    return $array;
+}
+
+/**
 * Creates a fieldmap with all information necessary to output the fields
 *
 * @param $prefix string prefix for the variable ID
@@ -381,6 +409,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
         $sLanguage=getBaseLanguageFromSurveyID($iSurveyID);
     }
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,$sLanguage);
+    $fieldmap = removeFields($fieldmap);
 
     #See if tokens are being used
     $bTokenTableExists = tableExists('tokens_'.$iSurveyID);
@@ -391,6 +420,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
     $fields=array();
     if ($bTokenTableExists && $sSurveyAnonymized == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
+        $tokenattributes = removeFields($tokenattributes);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
             //Drop the token field, since it is in the survey too
