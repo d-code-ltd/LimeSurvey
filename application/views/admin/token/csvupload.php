@@ -37,7 +37,7 @@
                     <div class="col-sm-3">
                         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'separator',
-                            'value'=> 'auto',
+                            'value'=> 'semicolon',
                             'selectOptions'=>array(
                                 "auto"=>gT("Automatic",'unescaped'),
                                 "comma"=>gT("Comma",'unescaped'),
@@ -55,7 +55,7 @@
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => "filterblankemail",
                                 'id'=>"filterblankemail",
-                                'value' => '1',
+                                'value' => '0',
                                 'onLabel'=>gT('On'),
                                 'offLabel' => gT('Off')));
                             ?>
@@ -112,7 +112,7 @@
                     <label class="col-sm-2 control-label" for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
                     <div class="col-sm-3">
                         <?php
-                            echo CHtml::listBox('filterduplicatefields', array('firstname', 'lastname', 'email'), $aTokenTableFields, array('multiple' => 'multiple', 'size' => '7','class'=>'form-control'));
+                            echo CHtml::listBox('filterduplicatefields', array('email', 'token'), $aTokenTableFields, array('multiple' => 'multiple', 'size' => '7','class'=>'form-control'));
                         ?>
                     </div>
                 </div>
