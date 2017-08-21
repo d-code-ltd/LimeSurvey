@@ -6,7 +6,7 @@
         <div class="col-sm-10">
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'completionstate',
-                'value'=> 'all' ,
+                'value'=> 'complete' ,
                 'selectOptions'=>array(
                     "all"=>gT("All responses",'unescaped'),
                     "complete"=>gT("Complete only",'unescaped'),
@@ -24,6 +24,19 @@
                 'selectOptions'=>array(
                     "1"=>gT("Prior to 16",'unescaped'),
                     "2"=>gT("16 or up",'unescaped')
+                )
+            ));?>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for='codeset'  class='col-sm-2  form-control-label'><?php eT("Codeset:");?></label>
+        <div class="col-sm-10">
+            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'codeset',
+                'value'=> 'windows-1250' ,
+                'selectOptions'=>array(
+                    "utf-8"=>gT("UTF-8"),
+                    "windows-1250"=>gT("Windows 1250 (CE)")
                 )
             ));?>
         </div>

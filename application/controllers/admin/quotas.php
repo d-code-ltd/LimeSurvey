@@ -227,6 +227,8 @@ class quotas extends Survey_Common_Action
         $oQuota->action = Yii::app()->request->getPost('quota_action');
         $oQuota->autoload_url = Yii::app()->request->getPost('autoload_url');
         $oQuota->active = Yii::app()->request->getPost('active');
+        $oQuota->partner_token_length = Yii::app()->request->getPost('partner_token_length');
+        $oQuota->partner_url = Yii::app()->request->getPost('partner_url');
         $oQuota->save();
         $iQuotaId = $oQuota->id;
 
@@ -283,6 +285,8 @@ class quotas extends Survey_Common_Action
         $oQuota->action = Yii::app()->request->getPost('quota_action');
         $oQuota->autoload_url = Yii::app()->request->getPost('autoload_url');
         $oQuota->active = Yii::app()->request->getPost('active');
+        $oQuota->partner_token_length = Yii::app()->request->getPost('partner_token_length');
+        $oQuota->partner_url = Yii::app()->request->getPost('partner_url');
         $oQuota->save();
 
         //Iterate through each language posted, and make sure there is a quota message for it

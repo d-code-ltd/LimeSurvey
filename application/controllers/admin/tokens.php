@@ -1637,6 +1637,7 @@ class tokens extends Survey_Common_Action
                 $aOptionsStatus['3']=gT('Not started');
                 $aOptionsStatus['4']=gT('Started but not yet completed');
             }
+            $aOptionsStatus['5']=gT('Started but got endlink');
 
             $oTokenLanguages=Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
             $aFilterByLanguage=array(''=>gT('All'));

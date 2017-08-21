@@ -42,7 +42,7 @@
                                         <?php foreach ($exports as $key => $info): ?>
                                             <?php if (!empty($info['label'])): ?>
                                                 <div class="radio">
-                                                    <label><input type="radio" name="type" id="<?php echo $key;?>" value="<?php echo $key;?>" <?php if($info['label']=='CSV'){ echo 'checked';}?>><?php echo $info['label'];?></label>
+                                                    <label><input type="radio" name="type" id="<?php echo $key;?>" value="<?php echo $key;?>" <?php if($key=='xls'){ echo 'checked';}?>><?php echo $info['label'];?></label>
                                                 </div>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
@@ -249,39 +249,39 @@
                             <div class="panel-body">
                                 <!-- Answer codes / Full answers -->
                                 <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default">
+                                    <label class="btn btn-default active">
                                         <input
                                             name="answers"
                                             value="short"
                                             type="radio"
+                                            checked='checked'
                                             id="answers-short"
+                                            autofocus="true"
                                         />
                                         <?php eT("Answer codes");?>
                                     </label>
 
-                                    <label class="btn btn-default active">
+                                    <label class="btn btn-default">
                                         <input
                                             name="answers"
                                             value="long"
                                             type="radio"
-                                            checked='checked'
                                             id="answers-long"
-                                            autofocus="true"
                                         />
                                         <?php eT("Full answers");?>
                                     </label>
                                 </div>
 
                                 <!-- Responses  -->
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <br/>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
-                                    echo '&nbsp;'.CHTML::label(gT("Convert Y to:"),'converty');?>
-                                    <?php echo CHTML::textField('convertyto','1',array('id'=>'convertyto','size'=>'3','maxlength'=>'1')); ?>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('convertn',false,array('value'=>'Y','id'=>'convertn'));
-                                    echo '&nbsp;'.CHTML::label(gT("Convert N to:"),'convertn');?>
-                                    <?php echo CHTML::textField('convertnto','2',array('id'=>'convertnto','size'=>'3','maxlength'=>'1')); ?>
-                                </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php //echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
+                                    //echo '&nbsp;'.CHTML::label(gT("Convert Y to:"),'converty');?>
+                                    <?php //echo CHTML::textField('convertyto','1',array('id'=>'convertyto','size'=>'3','maxlength'=>'1')); ?>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php //echo CHTML::checkBox('convertn',false,array('value'=>'Y','id'=>'convertn'));
+                                    //echo '&nbsp;'.CHTML::label(gT("Convert N to:"),'convertn');?>
+                                    <?php //echo CHTML::textField('convertnto','2',array('id'=>'convertnto','size'=>'3','maxlength'=>'1')); ?>
+                                    </div> -->
                             </div>
                         </div>
 

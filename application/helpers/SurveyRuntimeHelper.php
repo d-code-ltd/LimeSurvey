@@ -877,6 +877,13 @@ class SurveyRuntimeHelper {
                     $_SESSION[$LEMsessid]['sid'] = $surveyid;
 
                     sendCacheHeaders();
+                    // Partner endpage
+                    if(isset($clienttoken) && strlen($thissurvey['partner_url']) && strlen($clienttoken) && strlen($clienttoken) >= intval($thissurvey['partner_token_length'])){
+                        $thissurvey['partner_url'] = str_replace("{token}", $clienttoken, $thissurvey['partner_url']);
+                        header("Location: {$thissurvey['partner_url']}");
+                    }
+
+                    // Limesurvey endpage
                     if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
                     {
                         //Automatically redirect the page to the "url" setting for the survey

@@ -6309,6 +6309,16 @@
                                 if ($sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment'))     // to catch case 'P'
                                 {
                                     $foundSQrelevance=true;
+
+                                    // Remove the part that is relevant for option excluding
+                                    if ($sq['qtype'] == 'M' && strpos($sq['type'], 'exclude_all_others') !== false) { // Do it only for the 'Multiple choice checkbox' question type
+                                        $compare = '';
+                                        while ($sq['eqn'] != $compare) { // There might be a situation where there are multiple excluding options defined
+                                            $compare = $sq['eqn'];
+                                            $sq['eqn'] = preg_replace("/(\s+and\s+|\s*)is_empty\($sq[sgqa]([A-Z0-9]+).NAOK\)$/", '', $sq['eqn']);
+                                        }
+                                    }
+
                                     if (isset($LEM->ParseResultCache[$sq['eqn']]))
                                     {
                                         $sqrel = $LEM->ParseResultCache[$sq['eqn']]['result'];
@@ -6776,6 +6786,19 @@
                     $_SESSION[$LEM->sessid][$sgqa] = NULL;
                     $updatedValues[$sgqa] = NULL;
                     $LEM->updatedValues[$sgqa] = NULL;
+                }
+            }
+            elseif ($qInfo['type'] == 'M')
+            {
+                foreach ($unansweredSQs as $unansweredSQ) {
+                    $updatedValues[$unansweredSQ] = array(
+                        'type' => $qInfo['type'],
+                        'value' => ''
+                    );
+                    $LEM->updatedValues[$unansweredSQ] = array(
+                        'type' => $qInfo['type'],
+                        'value' => ''
+                    );
                 }
             }
             elseif ($qInfo['type'] == '*')

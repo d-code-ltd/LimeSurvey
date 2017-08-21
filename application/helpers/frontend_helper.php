@@ -2162,6 +2162,8 @@ function checkCompletedQuota($surveyid,$return=false)
     $sUrlDescription=$event->get('urldescrip',$aMatchedQuota['quotals_urldescrip']);
     $sAction=$event->get('action',$aMatchedQuota['action']);
     $sAutoloadUrl=$event->get('autoloadurl',$aMatchedQuota['autoload_url']);
+    $sPartnerTokenLength=$event->get('partnertokenlength',$aMatchedQuota['partner_token_length']);
+    $sPartnerUrl=$event->get('partnerUrl',$aMatchedQuota['partner_url']);
 
     // Doing the action and show the page
     if ($sAction == "1" && $sClientToken)
@@ -2196,6 +2198,16 @@ function checkCompletedQuota($surveyid,$return=false)
 
     // Send page to user and end.
     sendCacheHeaders();
+
+    // Partner endlink
+    if(isset($sClientToken) && strlen($sPartnerUrl) && strlen($sClientToken) && strlen($sClientToken) >= intval($sPartnerTokenLength))
+    {
+        killSurveySession($surveyid);
+        $sPartnerUrl = str_replace("{token}", $sClientToken, $sPartnerUrl);
+        header("Location: ".$sPartnerUrl);
+    }
+
+    // Limesurvey endlink
     if($sAutoloadUrl == 1 && $sUrl != "")
     {
         if ($sAction == "1")

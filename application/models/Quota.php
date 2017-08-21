@@ -81,6 +81,8 @@ class Quota extends LSActiveRecord
             array('action', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'2', 'allowEmpty'=>true), // Default is null ?
             array('active', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
             array('autoload_url', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
+            array('partner_token_length', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'99', 'allowEmpty'=>true),
+            array('partner_url','LSYii_Validators')
         );
     }
 

@@ -38,7 +38,7 @@
                 else {
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'datestamp',
-                    'value'=> $esrow['datestamp'] == "Y",
+                    'value'=> 1, //$esrow['datestamp'] == "Y"
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off'),
                     'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
@@ -120,7 +120,7 @@
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'savetimings',
-                        'value'=> $esrow['savetimings'] == "Y",
+                        'value'=> 1, //$esrow['savetimings'] == "Y"
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                     ));

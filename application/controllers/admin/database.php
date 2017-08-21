@@ -1105,6 +1105,7 @@ class database extends Survey_Common_Action
 
                         // Fix bug with FCKEditor saving strange BR types
                         $short_title = Yii::app()->request->getPost('short_title_'.$langname);
+                        $short_name = Yii::app()->request->getPost('short_name_'.$langname);
                         $description = Yii::app()->request->getPost('description_'.$langname);
                         $welcome = Yii::app()->request->getPost('welcome_'.$langname);
                         $endtext = Yii::app()->request->getPost('endtext_'.$langname);
@@ -1116,6 +1117,7 @@ class database extends Survey_Common_Action
 
                         $data = array(
                             'surveyls_title' => $short_title,
+                            'surveyls_name' => $short_name,
                             'surveyls_description' => $description,
                             'surveyls_welcometext' => $welcome,
                             'surveyls_endtext' => $endtext,
@@ -1185,6 +1187,8 @@ class database extends Survey_Common_Action
                 $oSurvey->expires =  $expires;
                 $oSurvey->startdate =  $startdate;
                 $oSurvey->faxto = App()->request->getPost('faxto');
+                $oSurvey->partner_token_length = App()->request->getPost('partner_token_length');
+                $oSurvey->partner_url = App()->request->getPost('partner_url');
                 $oSurvey->format = App()->request->getPost('format');
                 $oSurvey->template = Yii::app()->request->getPost('template');
                 $oSurvey->assessments = App()->request->getPost('assessments')=='1'?'Y':'N';

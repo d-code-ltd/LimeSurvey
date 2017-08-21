@@ -76,7 +76,7 @@ function strSplitUnicode($str, $l = 0) {
 * @param sep Quote separator. Use '\'' for SPSS, '"' for R
 * @param logical $header If TRUE, adds SQGA code as column headings (used by export to R)
 */
-function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE, $sLanguage='') {
+function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE, $sLanguage='', $codeset = 'utf-8') {
 
     // Build array that has to be returned
     $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
@@ -101,11 +101,11 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
             {
                 $i = 1;
                 foreach ($fields as $field) {
-                    if (!$field['hide'] ) echo $q.strtoupper($field['sql_name']).$q;
-                    if ($i<$num_fields && !$field['hide']) echo ',';
+                    if (!$field['hide'] ) printRow($q.strtoupper($field['sql_name']).$q, $codeset);
+                    if ($i<$num_fields && !$field['hide']) printRow(',', $codeset);
                     $i++;
                 }
-                echo("\n");
+                printRow("\n", $codeset);
             }
         }
         $row = array_change_key_case($row,CASE_UPPER);
@@ -113,7 +113,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
         reset($fields);    //Jump to the first element in the field array
         $i = 1;
         foreach ($fields as $field)
-        {
+        {  
             $fieldno = strtoupper($field['sql_name']);
             if ($field['SPSStype']=='DATETIME23.2'){
                 #convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
@@ -122,93 +122,118 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
                     list( $year, $month, $day, $hour, $minute, $second ) = preg_split( '([^0-9])', $row[$fieldno] );
                     if ($year != '' && (int)$year >= 1900)
                     {
-                        echo $q.date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) ).$q;
+                        printRow($q.date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) ).$q, $codeset);
                     } else
                     {
-                        echo ($na);
+                        printRow($na, $codeset);
                     }
                 }  else
                 {
-                    echo ($na);
+                    printRow($na, $codeset);
                 }
             } else if ($field['LStype'] == 'Y')
                 {
                     if ($row[$fieldno] == 'Y')    // Yes/No Question Type
                     {
-                        echo( $q. 1 .$q);
+                        printRow($q. 1 .$q, $codeset);
                     } else if ($row[$fieldno] == 'N'){
-                            echo( $q. 2 .$q);
+                            printRow($q. 2 .$q, $codeset);
                         } else {
-                            echo($na);
+                            printRow($na, $codeset);
                     }
                 } else if ($field['LStype'] == 'G')    //Gender
                     {
                         if ($row[$fieldno] == 'F')
                         {
-                            echo( $q. 1 .$q);
+                            printRow($q. 1 .$q, $codeset);
                         } else if ($row[$fieldno] == 'M'){
-                                echo( $q. 2 .$q);
+                                printRow($q. 2 .$q, $codeset);
                             } else {
-                                echo($na);
+                                printRow($na, $codeset);
                         }
                     } else if ($field['LStype'] == 'C')    //Yes/No/Uncertain
                         {
                             if ($row[$fieldno] == 'Y')
                             {
-                                echo( $q. 1 .$q);
+                                printRow($q. 1 .$q, $codeset);
                             } else if ($row[$fieldno] == 'N'){
-                                    echo( $q. 2 .$q);
+                                    printRow($q. 2 .$q, $codeset);
                                 } else if ($row[$fieldno] == 'U'){
-                                        echo( $q. 3 .$q);
+                                        printRow($q. 3 .$q, $codeset);
                                     } else {
-                                        echo($na);
+                                        printRow($na, $codeset);
                             }
                         } else if ($field['LStype'] == 'E')     //Increase / Same / Decrease
                             {
                                 if ($row[$fieldno] == 'I')
                                 {
-                                    echo( $q. 1 .$q);
+                                    printRow($q. 1 .$q, $codeset);
                                 } else if ($row[$fieldno] == 'S'){
-                                        echo( $q. 2 .$q);
+                                        printRow($q. 2 .$q, $codeset);
                                     } else if ($row[$fieldno] == 'D'){
-                                            echo( $q. 3 .$q);
+                                            printRow($q. 3 .$q, $codeset);
                                         } else {
-                                            echo($na);
+                                            printRow($na, $codeset);
                                 }
-                            } elseif (($field['LStype'] == 'P' || $field['LStype'] == 'M') && (substr($field['code'],-7) != 'comment' && substr($field['code'],-5) != 'other'))
-                            {
-                                if ($row[$fieldno] == 'Y')
+                            } else if ($field['LStype'] == ':')     //Increase / Same / Decrease
                                 {
-                                    echo($q. 1 .$q);
-                                } elseif(isset($row[$fieldno]))
-                                {
-                                    echo($q. 0 .$q);
-                                } else {
-                                    echo($na);
-                                }
-                            } elseif (!$field['hide']) {
-                                $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
-                                if (trim($strTmp) != ''){
-                                    if($q=='\'') $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
-                                    if($q=='"') $strTemp=str_replace(array('"',"\n","\r"),array('""',' ',' '),trim($strTmp));
-                                    /*
-                                    * Temp quick fix for replacing decimal dots with comma's
-                                    if (isNumericExtended($strTemp)) {
-                                    $strTemp = str_replace('.',',',$strTemp);
+                                    if ($row[$fieldno] == '1')
+                                    {
+                                        $code = explode('_', $field['code']);
+                                        printRow($q. end($code) .$q, $codeset);
+                                    } else if ($row[$fieldno] == '' && !is_null($row[$fieldno])){
+                                                printRow($q. 0 .$q, $codeset);
+                                            } else {
+                                                printRow($na, $codeset);
                                     }
-                                    */
-                                    echo $q. $strTemp .$q ;
-                                }
-                                else
+                                } elseif (($field['LStype'] == 'P' || $field['LStype'] == 'M') && (substr($field['code'],-7) != 'comment' && substr($field['code'],-5) != 'other'))
                                 {
-                                    echo $na;
+                                    if ($row[$fieldno] == 'Y')
+                                    {
+                                        printRow($q. $field['code'] .$q, $codeset);
+                                    } elseif(isset($row[$fieldno]))
+                                    {
+                                        printRow($q. 0 .$q, $codeset);
+                                    } else {
+                                        printRow($na, $codeset);
+                                    }
+                                } elseif (!$field['hide']) {
+                                    $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
+                                    if (trim($strTmp) != ''){
+                                        if($q=='\'') $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
+                                        if($q=='"') $strTemp=str_replace(array('"',"\n","\r"),array('""',' ',' '),trim($strTmp));
+                                        /*
+                                        * Temp quick fix for replacing decimal dots with comma's
+                                        if (isNumericExtended($strTemp)) {
+                                        $strTemp = str_replace('.',',',$strTemp);
+                                        }
+                                        */
+                                        printRow($q. $strTemp .$q, $codeset);
+                                    }
+                                    else
+                                    {
+                                        printRow($na, $codeset);
+                                    }
                                 }
-                            }
-                            if ($i<$num_fields && !$field['hide']) echo ',';
+                                if ($i<$num_fields && !$field['hide']) printRow(',', $codeset);
             $i++;
         }
-        echo "\n";
+        printRow("\n", $codeset);
     }
+}
+
+/**
+* Encode and print the given string.
+*
+* @param string text to be encoded
+* @param string utf-8 or windows-1250 for now
+* @return string encoded text
+*/
+function printRow($string, $codeset = 'utf-8'){
+    if($codeset != 'utf-8'){
+        $string = iconv( mb_detect_encoding( $string ), 'Windows-1250//TRANSLIT', $string);
+    }
+    echo $string;
 }
 
 /**
@@ -322,6 +347,23 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 }
 
 /**
+* Removes the fields that are not needed in SPSS
+*
+* @param $array array of elements that has to be cleared up
+* @return array
+*/
+function removeFields($array){
+    foreach ($array as $key => $value) {
+        if(in_array($key, array('firstname','lastname','email','emailstatus','language','sent','remindersent','remindercount','usesleft','lastpage','startlanguage','startdate','datestamp', 'datestamp', 'startlanguage', 'remindercount'))) {
+            // array_splice($array, $key, 1);
+            unset($array[$key]);
+        }
+    }
+
+    return $array;
+}
+
+/**
 * Creates a fieldmap with all information necessary to output the fields
 *
 * @param $prefix string prefix for the variable ID
@@ -367,6 +409,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
         $sLanguage=getBaseLanguageFromSurveyID($iSurveyID);
     }
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,$sLanguage);
+    $fieldmap = removeFields($fieldmap);
 
     #See if tokens are being used
     $bTokenTableExists = tableExists('tokens_'.$iSurveyID);
@@ -377,6 +420,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
     $fields=array();
     if ($bTokenTableExists && $sSurveyAnonymized == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
+        $tokenattributes = removeFields($tokenattributes);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
             //Drop the token field, since it is in the survey too
@@ -1741,6 +1785,10 @@ function tokensExport($iSurveyID)
     if ($iTokenStatus==3 && $bIsNotAnonymous)
     {
         $oRecordSet->andWhere("completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)");
+    }
+    if ($iTokenStatus==5)
+    {
+        $oRecordSet->andWhere("completed='Q'");
     }
 
     if ($iInvitationStatus==1)

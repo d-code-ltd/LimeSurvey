@@ -136,6 +136,21 @@
         </div>
     </div>
 
+    <!-- Partner token length -->
+    <div class='form-group'>
+        <label class='control-label col-sm-3' for='partner-token-length'><?php eT("Partner token minumum length:");?></label>
+        <div class='col-sm-9'>
+            <input class='form-control' id="partner-token-length" name="partner_token_length" type="number" min="0" size="2" maxlength="2" value="<?php echo $esrow['partner_token_length'];?>" />
+        </div>
+    </div>
+
+    <!-- Partner url -->
+    <div class='form-group'>
+        <label class='control-label col-sm-3' for='partner-url'><?php eT("Partner URL:");?></label>
+        <div class='col-sm-9'>
+            <input class='form-control' id="partner-url" name="partner_url" type="text" size="30" maxlength="255" value="<?php echo $esrow['partner_url'];?>" />
+        </div>
+    </div>
     <?php else: ?>
     <!-- End URL -->
     <div class="form-group">
@@ -198,6 +213,22 @@
         <label class="col-sm-3 control-label" for='faxto'><?php  eT("Fax to:") ; ?></label>
         <div class="col-sm-9">
             <input type='text' size='50' id='faxto' name='faxto'  class="form-control" />
+        </div>
+    </div>
+
+    <!-- Partner token length -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='partner-token-length'><?php  eT("Partner token minumum length:") ; ?></label>
+        <div class="col-sm-9">
+            <input id='partner-token-length' name='partner_token_length' class="form-control" type="number" min="0" size="2" maxlength="2"/>
+        </div>
+    </div>
+
+    <!-- Partner url -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='partner-url'><?php  eT("Partner URL:") ; ?></label>
+        <div class="col-sm-9">
+            <input id='partner-url' name='partner_url' class="form-control" type="text" size="30" maxlength="255" />
         </div>
     </div>
 

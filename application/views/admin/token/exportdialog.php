@@ -19,6 +19,7 @@
                                 <option value="2"><?php eT('Not completed'); ?></option>
                                 <option value="3"><?php eT('Not started'); ?></option>
                                 <option value="4"><?php eT('Started but not yet completed'); ?></option>
+                                <option value="5"><?php eT('Started but got endlink'); ?></option>
                             </select>
                         </div>
                     </div>
