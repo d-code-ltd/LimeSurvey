@@ -195,9 +195,7 @@ class export extends Survey_Common_Action {
             $aFields=array();
 
             // ignore these file types so they don't appear in the column selector
-            $ignore_types = array('X', 'lastpage', 'startlanguage', 'page_time', 'startdate', 'datestamp', 'answer_time', 'refurl', 'ipaddr');
-            var_dump($ignore_types);
-            var_dump($aFieldMap);
+            $ignore_types = array('X', 'lastpage', 'startlanguage', 'page_time', 'startdate', 'datestamp', 'answer_time', 'url', 'ipaddress');
             foreach($aFieldMap as $sFieldName=>$fieldinfo)
             {
                 if(!in_array($fieldinfo['type'], $ignore_types)) {
