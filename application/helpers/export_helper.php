@@ -354,7 +354,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 */
 function removeFields($array){
     foreach ($array as $key => $value) {
-        if(in_array($key, array('firstname','lastname','email','emailstatus','language','sent','remindersent','remindercount','usesleft','lastpage','startlanguage','startdate','datestamp', 'datestamp', 'startlanguage', 'remindercount'))) {
+        if(in_array($key, array('firstname','lastname','email','emailstatus','language','sent','remindersent','remindercount','usesleft','lastpage','startlanguage','startdate','datestamp', 'datestamp', 'startlanguage', 'remindercount', 'ipaddr', 'refurl'))) {
             // array_splice($array, $key, 1);
             unset($array[$key]);
         }
