@@ -1492,6 +1492,12 @@ function do_list_radio($ia)
         ////
         // Insert row
         // Display the answer row
+        
+        if($iNbCols > 1){
+            $sRows .= '<div class="row radio-list-column-header text-center">'.getTextBetweenTags($ansrow['answer'], 'above').'</div>';
+            $ansrow['answer'] = preg_replace('#<above[^>]*>(.*)</above>#isU', '', $ansrow['answer']);
+        }        
+
         $sRows .= doRender('/survey/questions/listradio/rows/answer_row', array(
             'sDisplayStyle' => $sDisplayStyle,
             'name'          => $ia[1],
@@ -6158,4 +6164,16 @@ function doRender($sView, $aData, $bReturn=true)
         }
     }
     return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
+}
+
+/**
+ * Get tag value from string.
+ * @param  string $string  The string we want to check for the given tag.
+ * @param  string $tagname The html tag we want to get the value for.
+ * @return string          The html tag value.
+ */
+function getTextBetweenTags($string, $tagname) {
+    $pattern = "/<$tagname ?.*>(.*)<\/$tagname>/";
+    preg_match($pattern, $string, $matches);
+    return isset($matches[1]) ? $matches[1] : '&nbsp;';
 }

@@ -31,24 +31,6 @@
         <?php if(count($aGroups)):?>
             <li class="panel panel-default dropdownstyle" id="questionexplorer-group-container">
 
-
-                <?php if (!$bSurveyIsActive && Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'create')): ?>
-                    <div class="row ">
-                        <div class="col-sm-8" >
-                            <!-- add group -->
-                            <a class="btn btn-link"
-                                data-toggle="tooltip"
-                                data-placement="bottom"
-                                title="<?php eT('Add a group');?>"
-                                href="<?php echo $this->createUrl("/admin/questiongroups/sa/add/surveyid/$iSurveyId"); ?>">
-                                <span class="glyphicon glyphicon-plus-sign"></span>
-                                <?php eT('Add group');?>
-                            </a>
-                        </div>
-                    </div>
-                    <?php endif; ?>
-
-
                 <?php foreach($aGroups as $aGroup):?>
 
                     <!-- Group -->
@@ -133,7 +115,24 @@
                                 <?php endif;?>
                         </div>
                     </div>
-                    <?php endforeach;?>
+                <?php endforeach;?>
+
+                <?php if (!$bSurveyIsActive && Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'create')): ?>
+                    <div class="row ">
+                        <div class="col-sm-8" >
+                            <!-- add group -->
+                            <a class="btn btn-link"
+                                data-toggle="tooltip"
+                                data-placement="bottom"
+                                title="<?php eT('Add a group');?>"
+                                href="<?php echo $this->createUrl("/admin/questiongroups/sa/add/surveyid/$iSurveyId"); ?>">
+                                <span class="glyphicon glyphicon-plus-sign"></span>
+                                <?php eT('Add group');?>
+                            </a>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
             </li>
 
 
